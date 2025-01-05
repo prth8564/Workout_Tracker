@@ -3,6 +3,7 @@ import { signup } from './functions/signup.js';
 import { login } from './functions/login.js';
 import { createWorkout } from './functions/createWorkout.js';
 import { authenticate } from './middlewares/authenticate.js';
+
 const app = express();
 app.use(express.json())
 

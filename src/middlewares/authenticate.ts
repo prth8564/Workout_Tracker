@@ -1,21 +1,27 @@
 import { Request,Response,NextFunction } from "express/index";
-import Jwt , {JwtPayload} from 'jsonwebtoken';
+import Jwt from 'jsonwebtoken';
 const { verify } = Jwt;
-interface RequestWithUser extends Request {
-    user:JwtPayload;
-}
-export async function authenticate(req:RequestWithUser,res:Response,next:NextFunction){
+
+export function authenticate(req:Request,res:Response,next:NextFunction){
     const authHeader:string | undefined = req.headers.authorization;
     if(!authHeader){
-        return res.status(401).json({"message":"auth Token not present"});
+        res.status(401).json({"message":"auth Token not present"});
+        return;
     }
     const authToken:string = authHeader.split(' ')[1];
     verify(authToken,"secret",(err,decoded) => {
         if (err) {
-            return res.status(403).send('Invalid token');
+            res.status(403).send('Invalid token');
+            return;
           }
-          req.user = decoded;
+        if(typeof decoded === 'object' && decoded != null){
+            req.user = decoded;
+        }
+        else{
+            res.status(403).send("Invalid token structure");
+            return;
+        }
+          
           next(); 
     })
 }
-

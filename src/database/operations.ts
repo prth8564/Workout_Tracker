@@ -1,4 +1,4 @@
-import  client  from "./DBclient.js";
+import  {client}  from "./DBclient.js";
 
 export async function getUsers(email:string){
   const res = await client.query(`Select u.email,u.password_hash,u.user_id from users u where u.email = '${email}'`);
