@@ -1,8 +1,9 @@
-// import  client  from "./DBclient.js";
-const {client} = require("./DBclient.js")
+const { client } = require("./DBclient.js");
 
- async function getUsers(email){
-  const res = await client.query(`Select u.email,u.password_hash,u.user_id from users u where u.email = '${email}'`);
+async function getUsers(email) {
+  const res = await client.query(
+    `Select u.email,u.password_hash,u.user_id from users u where u.email = '${email}'`
+  );
   return res.rows[0];
 }
 async function getWorkouts(email) {
@@ -13,11 +14,7 @@ async function getWorkouts(email) {
     console.log(dbItem);
   }
 }
- async function insertWorkout(
-  user_id,
-  duration,
-  description
-) {
+async function insertWorkout(user_id, duration, description) {
   const res =
     await client.query(`INSERT INTO workouts (user_id, duration, notes)
     VALUES 
@@ -32,22 +29,23 @@ async function insertWorkoutExercises(
   reps,
   weight
 ) {
-
   const res =
     await client.query(`INSERT INTO workout_exercises (workout_id, exercise_id, sets, reps, weight)
     VALUES 
     (${workout_id}, ${exercise_id}, ${sets}, ${reps}, ${weight})
 `);
-
 }
 
 async function insertUsers(name, email, password) {
   const res = await client.query(`INSERT INTO users(name,email,password_hash)
 VALUES('${name}','${email}','${password}')`);
   return;
-
 }
 
 module.exports = {
-  insertUsers,insertWorkoutExercises,insertWorkout,getUsers,getWorkouts
-}
+  insertUsers,
+  insertWorkoutExercises,
+  insertWorkout,
+  getUsers,
+  getWorkouts,
+};
