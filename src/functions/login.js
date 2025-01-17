@@ -1,9 +1,11 @@
-import { Request, Response } from "express/index";
-import { getUsers } from "../database/operations.js";
-import bcrypt from 'bcrypt';
-import Jwt from 'jsonwebtoken'
-const {sign} = Jwt
-export async function login(req:Request,res:Response){
+// import { getUsers } from "../database/operations.js";
+// import bcrypt from 'bcrypt';
+const { getUsers } = require('../database/operations.js');
+const bcrypt = require('bcrypt');
+const { sign } = require('jsonwebtoken');
+// import Jwt from 'jsonwebtoken'
+// const {sign} = Jwt
+ async function login(req,res){
     const {email,password} = req.body;
     const dbItem = await getUsers(email);
     await bcrypt.compare(password,dbItem.password_hash,(err,result)=>{
@@ -24,4 +26,7 @@ export async function login(req:Request,res:Response){
     })
     
     
+}
+module.exports = {
+    login
 }
